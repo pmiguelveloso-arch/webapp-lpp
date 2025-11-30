@@ -130,6 +130,17 @@ function findSimilarRackets(current) {
 export default function RacketPage() {
   const { id } = useParams();
   const racket = rackets.find((r) => r.id === id);
+  const specCards = useMemo(
+    () => [
+      { icon: '⚖️', label: 'Peso', value: racket?.weight },
+      { icon: '🟦', label: 'Formato', value: racket?.shape },
+      { icon: '🎯', label: 'Equilíbrio', value: racket?.balance },
+      { icon: '💠', label: 'Núcleo', value: racket?.core_type },
+      { icon: '🩶', label: 'Faces', value: racket?.surface_type },
+      { icon: '🌫', label: 'Rugosidade', value: racket?.roughness },
+    ],
+    [racket]
+  );
 
   if (!racket)
     return (
@@ -172,25 +183,23 @@ export default function RacketPage() {
       <section className="mt-10">
         <h2 className="text-xl font-bold mb-3">Especificações Técnicas</h2>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
-          <div className="p-3 rounded-xl bg-white/5 border border-white/10">
-            ⚖️ <b>Peso:</b> {racket.weight}
-          </div>
-          <div className="p-3 rounded-xl bg-white/5 border border-white/10">
-            🟦 <b>Formato:</b> {racket.shape}
-          </div>
-          <div className="p-3 rounded-xl bg-white/5 border border-white/10">
-            🎯 <b>Equilíbrio:</b> {racket.balance}
-          </div>
-          <div className="p-3 rounded-xl bg-white/5 border border-white/10">
-            💠 <b>Núcleo:</b> {racket.core_type}
-          </div>
-          <div className="p-3 rounded-xl bg-white/5 border border-white/10">
-            🩶 <b>Faces:</b> {racket.surface_type}
-          </div>
-          <div className="p-3 rounded-xl bg-white/5 border border-white/10">
-            🌫 <b>Rugosidade:</b> {racket.roughness}
-          </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 sm:gap-4 text-sm">
+          {specCards.map((spec) => (
+            <div
+              key={spec.label}
+              className="rounded-xl bg-white/5 border border-white/10 text-center flex flex-col items-center justify-center gap-3 px-3 py-4 sm:px-4 h-full min-h-[140px]"
+            >
+              <span className="text-2xl" aria-hidden="true">
+                {spec.icon}
+              </span>
+              <div className="space-y-1 leading-none">
+                <p className="text-xs uppercase tracking-wide text-slate-300 font-semibold">
+                  {spec.label}
+                </p>
+                <p className="font-bold text-sm text-white">{spec.value}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
